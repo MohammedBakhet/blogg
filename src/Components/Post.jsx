@@ -1,31 +1,33 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import '../Pages/Home.css';
 
-const Post = () => {
+export default function Post({ _id, title, summary, cover, content, createdAt, author }) {
   return (
-    <div> 
-        
-    <div className="post">
-    <div className="image">
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6hctapq5Vgl1wuCkw8BPOO1CwnE2M8sqKZQ&s"
-        alt=""
-      />
-    </div>
-    <div className="text">
-      <h2> Världens Bästa</h2>
-      <p className="info">
-        <a className="author">Darwin nunez</a>
-        <time>2019.04.20 18:00</time>
-      </p>
-      <p className="summary">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque
-        ratione aut quaerat alias voluptates rerum sit veniam asperiores,
-        ullam enim animi? Sunt nostrum aliquam, sequi voluptatibus quas
-        corporis adipisci obcaecati.
-      </p>
-    </div>
-  </div></div>
-  )
-}
+    <div>
+      <div className="post">
+        <div className="image">
+            <Link to= {`/post/${_id}`}>
+          <img
+            src= {'http://localhost:4000/' + cover}
+            alt=""
+          />
+          </Link>
+        </div>
+       
+        <div className="text">
 
-export default Post
+
+        <Link to= {`/post/${_id}`}>  <h2>{title}</h2></Link>
+
+
+          <p className="info">
+            <a className="author"> {author && author.username} </a>
+            <time>{new Date(createdAt).toLocaleDateString()}</time>
+          </p>
+          <p className="summary">{summary}</p>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -37,10 +37,10 @@ export default function Login() {
             <main>
                 <Header />
                 <form className="login" onSubmit={login}>
-                    <h1>Login</h1>
-                    <input type="text" placeholder='Username' value={username} onChange={ev => setUsername(ev.target.value)} />
-                    <input type="password" placeholder='Password' value={password} onChange={ev => setPassword(ev.target.value)} />
-                    <button type="submit">Login</button>
+                    <h1>Logga in</h1>
+                    <input type="text" placeholder='Användarnamn' value={username} onChange={ev => setUsername(ev.target.value)} />
+                    <input type="password" placeholder='Lösenord' value={password} onChange={ev => setPassword(ev.target.value)} />
+                    <button type="submit">Logga in</button>
                 </form>
             </main>
         </div>

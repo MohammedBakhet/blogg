@@ -1,45 +1,22 @@
-import ReactQuill from "react-quill";
 import "./Home.css";
 import "react-quill/dist/quill.snow.css";
 import Header from "../Components/Header";
+import Editor from "../Components/Editor";
 import { useState } from "react";
-const modules = {
-  toolbar: [
-    [{ header: [1, 2, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    ["link", "image"],
-    ["clean"],
-  ],
-};
+import { Navigate } from "react-router-dom";
 
-const formats = [
-  "header",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "image",
-];
+
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
+  const [redirect, setRedirect] = useState("");
 
 async function createNewPost(ev) {
     const data = new FormData();
+   
     data.set('title', title);
     data.set('summary', summary);
     data.set('content', content);
@@ -49,9 +26,15 @@ async function createNewPost(ev) {
     const response = await fetch('http://localhost:4000/post', {
         method: 'POST',
         body: data,
+        credentials: 'include',
     });
-    console.log(await response.json())
+    if (response.ok)  {
+        setRedirect(true);
+    }
     
+}
+if(redirect) {
+    return <Navigate to ={'/'}/>
 }
   return (
     <div>
@@ -71,13 +54,8 @@ async function createNewPost(ev) {
             onChange={(ev) => setSummary(ev.target.value)}
           />
           <input type="file" onChange={(ev) => setFiles(ev.target.files)}/>
-          <ReactQuill
-            value={content}
-            onChange={(newValue) => setContent(newValue)}
-            modules={modules}
-            formats={formats}
-          />
-          <button style={{ marginTop: "5px" }}>Create Post</button>
+         <Editor value={content} onChange ={setContent}/>
+          <button style={{ marginTop: "5px" }}>Skapa Post</button>
         </form>
       </main>
     </div>

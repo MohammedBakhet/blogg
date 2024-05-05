@@ -28,16 +28,16 @@ const Register = () => {
       <main>
         <Header />
         <form className="register" onSubmit={register}>
-          <h1>Register</h1>
+          <h1>Registrera</h1>
           <input
             type="text"
-            placeholder="username"
+            placeholder="Användarnamn"
             value={username}
             onChange={(ev) => setUsername(ev.target.value)}
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Lösenord"
             value={password}
             onChange={(ev) => setPassword(ev.target.value)}
           />

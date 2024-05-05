@@ -2,6 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import {useContext, useEffect} from "react";
 import { UserContext } from './UserContext';
+import { GiSoccerKick } from "react-icons/gi";
+import { IoIosLogIn } from "react-icons/io";
+import { IoCreateOutline } from "react-icons/io5";
 
 export default function Header() {
     
@@ -28,23 +31,22 @@ function logout(){
 const username = userInfo?.username;
 
   return (
-    <div>
-        
-    <header>
+    <div className='Header1'>        
+    <header  >
     <Link to="/" className="logo">
-      MyBlog
+      Fotbolls<GiSoccerKick />Bloggen 
     </Link>
     <nav>
         {username && (
             <>
-            <Link to="/create">Create new post</Link>
-            <a onClick={logout}>logout</a>
+            <Link to="/create">Skapa ny post</Link>
+            <a onClick={logout}>logga ut</a>
             </>
         )}
           {!username && (
             <>
-             <Link to="/login">Login</Link>
-             <Link to="/register">Register</Link>
+             <Link to="/login"> <IoIosLogIn />Logga in</Link>
+             <Link to="/register"> <IoCreateOutline />Registrera</Link>
             </>
         )}
      
