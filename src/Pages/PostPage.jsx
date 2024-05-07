@@ -4,9 +4,11 @@ import { useParams } from "react-router-dom";
 import "./Home.css";
 import { UserContext } from "../Components/UserContext";
 import { Link } from "react-router-dom";
+import CommentSection from "./CommentSection";
+
 
 export default function PostPage() {
-    const [postInfo,setPostInfo] = useState(null);
+    const [postInfo,setPostInfo] = useState();
     const {userInfo} = useContext(UserContext);
     const {id} = useParams();
     useEffect(() => {
@@ -56,8 +58,10 @@ export default function PostPage() {
             <img src={`http://localhost:4000/${postInfo.cover}`} alt="" />
           )}
         </div>
+      
+        <div dangerouslySetInnerHTML={{ __html: postInfo.content }}></div> 
+        <div> <CommentSection postId={id}/> </div>
         
-        <div dangerouslySetInnerHTML={{ __html: postInfo.content }}></div>
       </main>
     </div>
   );

@@ -156,6 +156,10 @@ div.post-page a.edit-btn{
     text-decoration: none;
     border-radius: 5px;
 }
+.kommentar{
+    width: 680px;
+    height: 150px;
+}
 
 a svg{
     height: 20px;

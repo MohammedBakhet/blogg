@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser')
 const multer = require('multer');
 const uploadMiddleware = multer({ dest: 'uploads/'});
+const comment = require('../models/comment.model');
 const fs = require('fs');
 
 
@@ -160,6 +161,23 @@ app.get('/post/:id', async (req, res) => {
     res.json(postDoc);
 
 })
+
+
+
+app.post('/post/:postId/comment', async (req, res) => {
+    try {
+      const { text } = req.body;
+      const { postId } = req.params;
+      const userId = req.user.id; // Assuming you have user authentication middleware
+  
+      const comment = await Comment.create({ text, postId, userId });
+  
+      res.json(comment);
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
 
 app.listen(4000, () => {
     console.log('listening on port 4000');
