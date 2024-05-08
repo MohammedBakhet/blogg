@@ -35,7 +35,7 @@ async function connectToMongoDB() {
 connectToMongoDB();
 
 
-// Define routes
+
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -69,14 +69,22 @@ app.post('/login', async (req, res) => {
 }
   });
 
-app.get('/profile', (req, res) => {
+  app.get('/profile', (req, res) => {
     const {token} = req.cookies;
-    jwt.verify(token, secret, {}, (err, info)=> {
+    try {
+      console.log("Profile: token", token)
+      jwt.verify(token, secret, {}, (err, info)=> {
         if (err) throw err;
         res.json(info);
-    });
-    
-});
+      });
+    } catch(err) {
+      console.error("Could not verify token", err)
+      res.status(401).json({
+        token
+      })
+    }
+
+}); 
 
 app.post('/logout', (req, res) => {
     res.cookie('token', '').json('ok')
@@ -164,11 +172,11 @@ app.get('/post/:id', async (req, res) => {
 
 
 
-app.post('/post/:postId/comment', async (req, res) => {
+app.post('/post/:postId/comments', async (req, res) => {
     try {
       const { text } = req.body;
       const { postId } = req.params;
-      const userId = req.user.id; // Assuming you have user authentication middleware
+      const userId = req.user.id; 
   
       const comment = await Comment.create({ text, postId, userId });
   

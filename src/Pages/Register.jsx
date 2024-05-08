@@ -1,27 +1,35 @@
 import React, { useState } from 'react';
 import Header from '../Components/Header';
+import { Navigate } from 'react-router-dom';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [redirect, setRedirect] = useState(false); 
 
   async function register(ev) {
     ev.preventDefault();
     try {
-        const response = await fetch('http://localhost:4000/register', {
-          method: 'POST',
-          body: JSON.stringify({ username, password }),
-          headers: { 'Content-Type': 'application/json' },
-        });
+      const response = await fetch('http://localhost:4000/register', {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-        if (!response.ok) {
-          throw new Error('Failed to register');
-        }
+      if (response.ok) {
         console.log('User registered successfully');
-      } catch (error) {
-        console.error('Error registering user:', error);
+        setRedirect(true); 
+      } else {
+        throw new Error('Failed to register');
       }
+    } catch (error) {
+      console.error('Error registering user:', error);
     }
+  }
+
+  if (redirect) {
+    return <Navigate to="/" />; 
+  }
 
   return (
     <div>
@@ -41,7 +49,7 @@ const Register = () => {
             value={password}
             onChange={(ev) => setPassword(ev.target.value)}
           />
-          <button>Register</button>
+          <button>Registrera</button>
         </form>
       </main>
     </div>

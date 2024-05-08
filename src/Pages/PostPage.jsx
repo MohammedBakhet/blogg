@@ -4,45 +4,42 @@ import { useParams } from "react-router-dom";
 import "./Home.css";
 import { UserContext } from "../Components/UserContext";
 import { Link } from "react-router-dom";
-import CommentSection from "./CommentSection";
 
 
 export default function PostPage() {
-    const [postInfo,setPostInfo] = useState();
-    const {userInfo} = useContext(UserContext);
-    const {id} = useParams();
-    useEffect(() => {
-      fetch(`http://localhost:4000/post/${id}`)
-        .then(response => {
-          response.json().then(postInfo => {
-            setPostInfo(postInfo);
-          });
+  const [postInfo, setPostInfo] = useState();
+  const { userInfo } = useContext(UserContext);
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/post/${id}`)
+      .then(response => {
+        response.json().then(postInfo => {
+          setPostInfo(postInfo);
         });
-    }, []);
-    if (!postInfo) return '';
+      });
+  }, [id]); // Include 'id' as a dependency in useEffect to re-fetch data when 'id' changes
+
+  if (!postInfo || !userInfo) return null; // Return null or a loading indicator if data is not available
 
   return (
     <div className="post-page">
       <main>
         <Header />
         <h1>{postInfo.title}</h1>
-
         <div className="author">
-         
           Av @ {postInfo.author && postInfo.author.username}
         </div>
-
         {userInfo.id === postInfo.author?._id && (
           <div className="edit-row">
-            <Link className="edit-btn" to={`/edit/${postInfo._id}`}>
+           <Link className="edit-btn" to={`/edit/${postInfo._id}`}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-6 h-6"
-              >
+                className="w-6 h-6"             >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -58,10 +55,8 @@ export default function PostPage() {
             <img src={`http://localhost:4000/${postInfo.cover}`} alt="" />
           )}
         </div>
-      
         <div dangerouslySetInnerHTML={{ __html: postInfo.content }}></div> 
-        <div> <CommentSection postId={id}/> </div>
-        
+        {/* Add other components or elements here */}
       </main>
     </div>
   );
